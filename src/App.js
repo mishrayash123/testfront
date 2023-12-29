@@ -11,8 +11,12 @@ import Cart from './Components/Services/Cart';
 import Deals from './Components/Services/Deals';
 import Summaery from './Components/Services/Summaery';
 import Checkout from './Components/Services/Checkout';
+import { useAuth } from "./AuthContext";
 
 function App() {
+  const { isLoggedIn } = useAuth();
+
+  
   return (
     <div>
       <Navbar />
