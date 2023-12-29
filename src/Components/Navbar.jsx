@@ -1,11 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState ,useRef,useEffect} from 'react';
 import { Navbar, MobileNav, Typography, Button, IconButton } from '@material-tailwind/react';
 import Logo from "./Images/logoecart.png"
+import { useAuth } from "../AuthContext";
+import pic from './Images/profile.jpg';
 
 
 
 const NavbarComponent = () => {
   const [openNav, setOpenNav] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { isLoggedIn, logout} = useAuth();
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
+  const handleDropdownClick = () => {
+    setIsDropdownOpen((prevState) => !prevState);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        isDropdownOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        closeDropdown();
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("click", handleOutsideClick);
+    } else {
+      document.removeEventListener("click", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [isDropdownOpen]);
+
   
 
   const navList = (
@@ -45,9 +80,50 @@ const NavbarComponent = () => {
         </a>
         <div className="hidden lg:block">{navList}</div>
         <div className="flex items-center gap-x-1">
-        <Typography as="a" href='/login' className="cursor-pointer py-1.5 font-medium " placeholder="jsjx" >
-          Profile
-        </Typography>
+        {isLoggedIn ? (
+                  <>
+                    <div
+                      className="relative inline-block text-left"
+                      ref={dropdownRef}
+                    >
+                      <button
+                        onClick={handleDropdownClick}
+                        className="w-12 h-12 p-1 relative group rounded-full overflow-hidden focus:outline-none"
+                      >
+                        <img
+                          className="object-cover w-full h-full rounded-full border-solid border-2 border-black group-hover:opacity-70"
+                          src={pic}
+                          alt="Profile"
+                        />
+                      </button>
+                      {isDropdownOpen && (
+                        <div className=" origin-top-right absolute right-0 mt-3 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                          <div className="py-1">
+                            <a
+                              href="/"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              onClick={closeDropdown}
+                            >
+                              View Profile
+                            </a>
+                            <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <button onClick={() => { closeDropdown(); logout(); }}>
+                              Logout
+                            </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <a
+                    href="/login"
+                    className="hover:bg-black text-white px-3 py-2 rounded-md text-md font-medium"
+                  >
+                    Sign In
+                  </a>
+                )}
           {/* <Button variant="gradient" size="sm" className="hidden lg:inline-block" placeholder="jsjx">
             Sign In
           </Button> */}
