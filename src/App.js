@@ -16,6 +16,7 @@ import { useAuth } from "./AuthContext";
 import Notfound from "./Components/Notfound"
 import Notlogin from "./Components/Notlogin"
 import Profile from './Components/Profilesection/Profile';
+import Edit from './Components/Profilesection/Edit';
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -36,6 +37,7 @@ function App() {
     <Route path='/order' element={<Summaery />}></Route>
     <Route path='/checkout' element={<Checkout />}></Route>
     <Route path='/profile' element={<Profile />}></Route>
+    <Route path='/edit' element={<Edit />}></Route>
     </>
     ) : ( 
             <>
@@ -45,6 +47,9 @@ function App() {
     <Route path='/cart' element={<Notlogin />}></Route>
     <Route path='/deals' element={<Notlogin />}></Route>
     <Route path='/profile' element={<Notlogin />}></Route>
+    <Route path='/edit' element={<Notlogin />}></Route>
+    <Route path='/order' element={<Notlogin/>}></Route>
+    <Route path='/checkout' element={<Notlogin />}></Route>
     <Route path='/login' element={<Login />}></Route>
     <Route path='/register' element={<Register />}></Route>
             </>

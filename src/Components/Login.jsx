@@ -29,7 +29,7 @@ const Login = () => {
         const { username, email } = data;
         setUser({ username, email });
         login();
-        localStorage.setItem("token", data.authentication.sessionToken);
+        localStorage.setItem("token", data.sessionToken);
         localStorage.setItem("userId", data._id);
         alert("Logged in successfully");
         navigate("/");

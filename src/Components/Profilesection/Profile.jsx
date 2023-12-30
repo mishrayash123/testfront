@@ -64,7 +64,7 @@ function Profile() {
                 </tbody>
               </table> */}
               <div className="text-center my-6">
-                {/* {!(profileData.image && profileData.sex && profileData.contact &&  profileData.address) ? (
+                {!(true) ? (
                   <>
                     <p className="text-sm font-light text-red-500 dark:text-red-400 mb-2">
                       Your Profile is Incomplete please complete your Profile
@@ -83,7 +83,7 @@ function Profile() {
                   >
                     Edit Profile
                   </Link>
-                )} */}
+                )}
               </div>
             </div>
           </div>
