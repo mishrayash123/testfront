@@ -17,9 +17,14 @@ import {
 
 
 function Product() {
+    const location = useLocation();
     const [products, setproducts] = useState([]);
     const [cat, setcat] = useState("");
-    const location = useLocation();
+    const [productid, setproductid] = useState(0);
+    const [image, setimage] = useState("");
+    const [title, settitle] = useState("");
+    const [price, setprice] = useState(0);
+    const [isincart, setisincart] = useState(location.state.isincart);
     const nav = useNavigate();
 
     const options = {
@@ -36,7 +41,7 @@ function Product() {
         }
     }
 
-
+    
     const options1 = {
         method: 'GET',
         url: `https://fakestoreapi.com/products/${cat}`,
@@ -57,6 +62,57 @@ function Product() {
         fetchData1();
     }, []);
 
+    const addtocart = async () => {
+        try {
+            const userid = localStorage.getItem("userId");
+        const response = await fetch(
+          "https://e-cartbackend.onrender.com/addtocart",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({productid,userid,title,price,image}),
+          }
+        );
+  
+        if (response.ok) {
+          const data = await response.json();
+          alert("Added");
+          setisincart(true)
+        } else {
+          alert("Already exist");
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
+    }
+
+    const remove = async () => {
+        try {
+        const response = await fetch(
+          `https://e-cartbackend.onrender.com/deleteCart/${location.state.objid}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        if (response.ok) {
+          const data = await response.json();
+          setisincart(false)
+          alert("Removed");
+        } else {
+          alert("something went wrong");
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
+    }
+
+
     return (
         <div>
             <div className="bg-gray-100 dark:bg-gray-800 py-8">
@@ -70,7 +126,21 @@ function Product() {
                                     </div>
                                     <div className="flex -mx-2 mb-4">
                                         <div className="w-1/2 px-2">
-                                            <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">Add to Cart</button>
+                                            {
+                                                isincart? <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700"
+                                                onClick={()=>{
+                                                   remove(products.id)
+                                                }}
+                                                >Remove</button> :<button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700"
+                                                onClick={()=>{
+                                                    setimage(products.image)
+                                                    setprice(products.price)
+                                                    settitle(products.title)
+                                                    setproductid(products.id)
+                                                    addtocart()
+                                                }}
+                                                >Add to Cart</button>
+                                            }
                                         </div>
                                         <div className="w-1/2 px-2">
                                             <button className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600" onClick={

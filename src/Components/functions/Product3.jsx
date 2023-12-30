@@ -47,7 +47,7 @@ function Product3() {
           products.map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.id } });
+                nav('/product', { state: { id: products.id,isincart:false} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">

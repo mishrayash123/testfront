@@ -63,7 +63,7 @@ function Product2() {
           products1.slice(0,3).map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.id } });
+                nav('/product', { state: { id: products.id,isincart:false } });
               }
           }>
             <Card className="cardwid1 shadow-lg m-2" placeholder="k">
@@ -120,7 +120,7 @@ function Product2() {
           products2.slice(0,3).map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.id } });
+                nav('/product', { state: { id: products.id,isincart:false} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">

@@ -10,40 +10,38 @@ import {
   Tooltip,
   IconButton,
 } from "@material-tailwind/react";
+import {useNavigate} from 'react-router-dom'
 
 
 
 function Cart() {
-  // const [products, setproducts] = useState<Products[]>([]);
-
-  const products = ['dsdk','dskjdk','djkdj','sjdj','f','f']
-
-  const options = {
-    method: 'GET',
-  url: 'https://real-time-amazon-data.p.rapidapi.com/search',
-  params: {
-    query: 'Phone',
-    page: '1',
-    country: 'US',
-    category_id: 'aps'
-  },
-  headers: {
-    'X-RapidAPI-Key': 'e8d49997e3mshc19c5745cb99d78p1bb5a1jsnedfa2627415c',
-    'X-RapidAPI-Host': 'real-time-amazon-data.p.rapidapi.com'
-  }
-  };
+  const [products, setproducts] = useState([]);
+  const nav = useNavigate();
 
   const fetchData = async () => {
-    // try {
-    //   const response = await axios.request(options);
-    //   setproducts(response.data.data.products);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+  const response = await fetch(
+    "https://e-cartbackend.onrender.com/getCart",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (response.ok) {
+    const data = await response.json();
+    setproducts(data.filter((e) => (e.userid === localStorage.getItem("userId"))))
+  } else {
+    alert("Something went wrong");
+  }
+} catch (error) {
+  console.error("Error during login:", error);
+}
   }
 
   useEffect(() => {
-    
     fetchData();
   }, []);
  
@@ -51,24 +49,33 @@ function Cart() {
     return (
       <div className='my-3'>
         <h2 className="font-bold m-5 text-2xl">My cart</h2>
-       <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%] max-[640px]:w-1/2" role="group">
+        <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%] max-[640px]:w-1/2 " role="group">
          {
           products.map(products =>(
-            <a href='/product'>
-            <Card className="w-3/4 max-w-[26rem] shadow-lg" placeholder="k">
+            <a href='' onClick={
+              (e) => {
+                nav('/product', { state: { id: products.productid ,isincart:true,objid:products._id} });
+              }
+          }>
+            <Card className="cardwid shadow-lg m-2" placeholder="k">
       <CardHeader floated={false} color="blue-gray" placeholder="k">
         <img
-          src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+          src={products.image}
           alt="ui/ux review check"
-          className='rounded-lg'
+          className='rounded-lg wid'
         />
       </CardHeader>
       <CardBody placeholder="k">
-        <div className="mb-3 flex items-center justify-between">
-          <Typography variant="h5" color="blue-gray" className="font-medium" placeholder="k">
-            Wooden House, Florida
+        <div className="mb-3 ">
+          <Typography variant="h6" color="blue-gray" className="font-medium" placeholder="k">
+           {products.title.slice(0,20)}
           </Typography>
-          <Typography
+        </div>
+        <div className='flex items-center justify-between'>
+        <Typography color="gray" className=' text-black font-bold' placeholder="k">
+          {products.price} &#8377;
+        </Typography>
+        <Typography
           placeholder="k"
             color="blue-gray"
             className="flex items-center gap-1.5 font-normal"
@@ -88,9 +95,6 @@ function Cart() {
             4.5
           </Typography>
         </div>
-        <Typography color="gray" placeholder="k">
-          Enter a freshly updated and thoughtfully .
-        </Typography>
         {/* <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
         </div> */}
       </CardBody>
