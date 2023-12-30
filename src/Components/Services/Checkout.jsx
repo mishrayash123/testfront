@@ -8,8 +8,33 @@ import { useNavigate } from 'react-router-dom'
 function Checkout() {
     const [products, setproducts] = useState([]);
     const [quantity,setquantity] = useState(1)
+    const [profiledata,setprofiledata] = useState([]);
     const location = useLocation();
     const nav = useNavigate();
+
+  const fetchData = async () => {
+    try {
+      const sessionToken=localStorage.getItem("token");
+  const response = await fetch(
+    "https://e-cartbackend.onrender.com/users",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({sessionToken}),
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    setprofiledata(data)
+  } else {
+    alert("Something went wrong");
+  }
+} catch (error) {
+  console.error("Error during login:", error);
+}
+  }
 
     const options1 = {
         method: 'GET',
@@ -28,6 +53,7 @@ function Checkout() {
 
     useEffect(() => {
         fetchData1();
+        fetchData();
     }, []);
   
     return (
@@ -116,42 +142,43 @@ function Checkout() {
     <div className="w-full  mx-auto p-8">
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md border dark:border-gray-700">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Checkout</h1>
-
+            {
+          profiledata.filter((e) => (e._id === localStorage.getItem("userId"))).map(profiledata =>(
             <div className="mb-6">
                 <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-2">Shipping Address</h2>
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label  className="block text-gray-700 dark:text-white mb-1">First Name</label>
-                        <input type="text" id="first_name" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"/>
+                        <input type="text" id="first_name" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" value={profiledata.fname}/>
                     </div>
                     <div>
                         <label  className="block text-gray-700 dark:text-white mb-1">Last Name</label>
-                        <input type="text" id="last_name" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"/>
+                        <input type="text" id="last_name" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"value={profiledata.lname}/>
                     </div>
                 </div>
 
                 <div className="mt-4">
                     <label  className="block text-gray-700 dark:text-white mb-1">Address</label>
-                    <input type="text" id="address" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"/>
+                    <input type="text" id="address" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" value={profiledata.address}/>
                 </div>
 
                 <div className="mt-4">
                     <label  className="block text-gray-700 dark:text-white mb-1">City</label>
-                    <input type="text" id="city" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"/>
+                    <input type="text" id="city" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" value={profiledata.city}/>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mt-4">
                     <div>
                         <label  className="block text-gray-700 dark:text-white mb-1">State</label>
-                        <input type="text" id="state" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"/>
+                        <input type="text" id="state" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" value={profiledata.state}/>
                     </div>
                     <div>
                         <label  className="block text-gray-700 dark:text-white mb-1">ZIP Code</label>
-                        <input type="text" id="zip" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"/>
+                        <input type="text" id="zip" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" value={profiledata.zip}/>
                     </div>
                 </div>
             </div>
-
+          ))}
             <div>
                 <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-2">Payment Information</h2>
                 <div className="mt-4">

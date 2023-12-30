@@ -1,14 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import pic from "../Images/profile.jpg";
-import { useAuth } from "../../AuthContext";
 
 function Profile() {
-  const { user } = useAuth();
+  const [profiledata,setprofiledata] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const sessionToken=localStorage.getItem("token");
+  const response = await fetch(
+    "https://e-cartbackend.onrender.com/users",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({sessionToken}),
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    setprofiledata(data)
+  } else {
+    alert("Something went wrong");
+  }
+} catch (error) {
+  console.error("Error during login:", error);
+}
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="p-8  ">
         <div className="flex items-center justify-center m-6 ">
+        {
+          profiledata.filter((e) => (e._id === localStorage.getItem("userId"))).map(profiledata =>(
           <div className="max-w-md xl:max-w-2xl bg-white ">
             <div className="shadow-xl   p-6 md:p-8 lg:p-10 xl:p-12">
               <div className="photo-wrapper mx-auto mb-6 ">
@@ -18,51 +47,69 @@ function Profile() {
                   alt="Profile"
                 />
               </div>
-              {/* {profileData.name && (
+              {profiledata.fname && (
                 <div className="text-center">
-                  <h3 className="text-xl lg:text-2xl font-bold leading-8">
-                    {profileData.name}
+                  <h3 className="text-base lg:text-2xl font-bold leading-8">
+                    {profiledata.fname} {profiledata.lname}
                   </h3>
                 </div>
-              )} */}
-              {/* <table className="text-lg lg:text-base my-6">
+              )}
+              <table className="text-lg lg:text-base my-6">
                 <tbody>
-                  {profileData.address && (
+                  {profiledata.email && (
                     <tr>
                       <td className="px-2 py-2 text-gray-500 font-semibold">
-                        Address
+                        Email
                       </td>
-                      <td className="px-2 py-2">{profileData.address}</td>
+                      <td className="px-2 py-2">{profiledata.email}</td>
                     </tr>
                   )}
-                  {profileData.contact?.mobile && (
+                  <tr>
+                      <td className="px-2 py-2 text-gray-500 font-semibold">
+                        Username
+                      </td>
+                      <td className="px-2 py-2">{profiledata.username}</td>
+                    </tr>
+                  {profiledata.phone && (
                     <tr>
                       <td className="px-2 py-2 text-gray-500 font-semibold">
                         Phone
                       </td>
                       <td className="px-2 py-2">
-                        {profileData.contact.mobile}
+                        {profiledata.phone}
                       </td>
                     </tr>
                   )}
-                  {profileData.email && (
+                  {profiledata.address && (
                     <tr>
                       <td className="px-2 py-2 text-gray-500 font-semibold">
-                        Email
+                        Address
                       </td>
-                      <td className="px-2 py-2">{profileData.email}</td>
+                      <td className="px-2 py-2">{profiledata.address}</td>
                     </tr>
                   )}
-                  {profileData.sex && (
+                  <tr>
+                      <td className="px-2 py-2 text-gray-500 font-semibold">
+                        City
+                      </td>
+                      <td className="px-2 py-2">{profiledata.city}</td>
+                    </tr>
                     <tr>
                       <td className="px-2 py-2 text-gray-500 font-semibold">
-                        Sex
+                        State
                       </td>
-                      <td className="px-2 py-2">{profileData.sex}</td>
+                      <td className="px-2 py-2">{profiledata.state}</td>
+                    </tr>
+                  {profiledata.zip && (
+                    <tr>
+                      <td className="px-2 py-2 text-gray-500 font-semibold">
+                        Pincode
+                      </td>
+                      <td className="px-2 py-2">{profiledata.zip}</td>
                     </tr>
                   )}
                 </tbody>
-              </table> */}
+              </table>
               <div className="text-center my-6">
                 {!(true) ? (
                   <>
@@ -87,6 +134,7 @@ function Profile() {
               </div>
             </div>
           </div>
+          ))}
         </div>
     </div>
   );
