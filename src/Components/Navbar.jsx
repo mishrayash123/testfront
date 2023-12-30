@@ -1,16 +1,13 @@
-import React, { useState ,useRef,useEffect} from 'react';
-import { Navbar, MobileNav, Typography, Button, IconButton } from '@material-tailwind/react';
-import Logo from "./Images/logoecart.png"
+import { Transition } from "@headlessui/react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../AuthContext";
-import pic from './Images/profile.jpg';
+import pic from "./Images/profile.jpg";
+import Logo from "./Images/logoecart.png"
 
-
-
-const NavbarComponent = () => {
-  const [openNav, setOpenNav] = useState(false);
+const Navbar = () => {
+  const { isLoggedIn, logout} = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { isLoggedIn, logout} = useAuth();
   const closeDropdown = () => {
     setIsDropdownOpen(false);
   };
@@ -41,46 +38,59 @@ const NavbarComponent = () => {
     };
   }, [isDropdownOpen]);
 
-  
-
-  const navList = (
-    <ul className="flex flex-col gap-2 lg:flex-row lg:items-center">
-      <Typography as="li" variant="small" color="blue-gray" className="p-1 font-medium" placeholder="jsjx">
-        <a href="/" className="flex items-center">
-          Home
-        </a>
-      </Typography>
-      <Typography as="li" variant="small" color="blue-gray" className="p-1 font-medium" placeholder="jsjx">
-        <a href="/products" className="flex items-center">
-          Products
-        </a>
-      </Typography>
-      <Typography as="li" variant="small" color="blue-gray" className="p-1 font-medium" placeholder="jsjx">
-        <a href="/cart" className="flex items-center">
-          Cart
-        </a>
-      </Typography>
-      <Typography as="li" variant="small" color="blue-gray" className="p-1 font-medium" placeholder="jsjx">
-        <a href="/deals" className="flex items-center">
-          Deals
-        </a>
-      </Typography>
-    </ul>
-  );
+  const [isOpen, setIsOpen] = useState(false);
+  const divRef = useRef();
 
   return (
-    <Navbar className="mx-auto w-full px-4 py-2 lg:px-8 lg:py-4 bg-blue-600 text-white" placeholder="jsjx">
-      <div className="container mx-auto flex items-center justify-between">
-        <a href="/" >
-        <img
+    <div className="fixed-top">
+      <nav className="bg-blue-600 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center">
+              <div className="flex flex-row">
+                <a
+                  href="/"
+                >
+                <img
           src={Logo}
           alt="ui/ux review check"
           className=' w-[70px] h-[50px]'
         />
-        </a>
-        <div className="hidden lg:block">{navList}</div>
-        <div className="flex items-center gap-x-1">
-        {isLoggedIn ? (
+                </a>
+              </div>
+              <div className="hidden md:block">
+                <div className="ml-10 flex items-baseline space-x-4">
+                  <a
+                    href="/"
+                    className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Home
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-center space-x-2">
+                <a
+                  href="/products"
+                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Products
+                </a>
+                <a
+                  href="/deals"
+                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Deals
+                </a>
+                <a
+                  href="/cart"
+                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Cart
+                </a>
+
+                {isLoggedIn ? (
                   <>
                     <div
                       className="relative inline-block text-left"
@@ -100,7 +110,7 @@ const NavbarComponent = () => {
                         <div className=" origin-top-right absolute right-0 mt-3 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                           <div className="py-1">
                             <a
-                              href="/"
+                              href="/profile"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                               onClick={closeDropdown}
                             >
@@ -119,54 +129,147 @@ const NavbarComponent = () => {
                 ) : (
                   <a
                     href="/login"
-                    className="hover:bg-black text-white px-3 py-2 rounded-md text-md font-medium"
+                    className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
-                    Sign In
+                    SignIn
                   </a>
                 )}
-          {/* <Button variant="gradient" size="sm" className="hidden lg:inline-block" placeholder="jsjx">
-            Sign In
-          </Button> */}
+              </div>
+            </div>
+            <div className="-mr-2 flex md:hidden">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                type="button"
+                className="bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                aria-controls="mobile-menu"
+                aria-expanded="false"
+              >
+                <span className="sr-only">Open main menu</span>
+                {!isOpen ? (
+                  <svg
+                    className="block h-6 w-6"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="block h-6 w-6"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
-        <IconButton
-          variant="text"
-          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-          ripple={false}
-          onClick={() => setOpenNav(!openNav)}
-           placeholder="jsjx"
+
+        <Transition
+          show={isOpen}
+          enter="transition ease-out duration-100 transform"
+          enterFrom="opacity-0 scale-95"
+          enterTo="opacity-100 scale-100"
+          leave="transition ease-in duration-75 transform"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-95"
         >
-          {openNav ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              className="h-6 w-6"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+          {(ref) => (
+            <div className="md:hidden" id="mobile-menu">
+              <div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
+                <a
+                  href="/"
+                  className="hover:bg-blue-900 dark:hover:bg-fuchsia-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                >
+                  Home
+                </a>
+              </div>
+              <div ref={divRef} className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
+                <a
+                  href="/products"
+                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Products
+                </a>
+              </div>
+              <div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
+                <a
+                  href="/deals"
+                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Deals
+                </a>
+              </div>
+              <div ref={divRef} className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
+                <a
+                  href="/cart"
+                  data-modal-target="authentication-modal"
+                  data-modal-toggle="authentication-modal"
+                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Cart
+                </a>
+              </div>
+
+              {isLoggedIn ? (
+                <>
+
+                  <div
+                    ref={divRef}
+                    className="px-2 pt-1 pb-1 space-y-1 sm:px-3"
+                  >
+                    <a
+                      href="/profile"
+                      className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      View Profile
+                    </a>
+                  </div>
+                  <div className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
+                    <button
+                      onClick={()=>{
+                        logout()
+                      }}
+                      className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div ref={divRef} className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
+                  <a
+                    href="/login"
+                    className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    SignIn
+                  </a>
+                </div>
+              )}
+            </div>
           )}
-        </IconButton>
-      </div>
-      <MobileNav open={openNav} className="bg-blue-600">
-        <div className="container mx-auto">{navList}</div>
-        <Typography as="a" href='/login' className="cursor-pointer py-1.5 font-medium" placeholder="jsjx" >
-          Profile
-        </Typography>
-      </MobileNav>
-    </Navbar>
+        </Transition>
+      </nav>
+    </div>
   );
 };
 
-export default NavbarComponent;
+export default Navbar;
