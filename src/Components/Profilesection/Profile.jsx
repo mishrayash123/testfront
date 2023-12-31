@@ -1,9 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import pic from "../Images/profile.jpg";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  Button,
+  Tooltip,
+  IconButton,
+} from "@material-tailwind/react";
+import '../css/product.css'
+import {useNavigate} from 'react-router-dom'
 
 function Profile() {
   const [profiledata,setprofiledata] = useState([]);
+  const [orderdata,setorderdata] = useState([])
+  const nav = useNavigate();
+
+  const fetchData2 = async () => {
+    try {
+  const response = await fetch(
+    "https://e-cartbackend.onrender.com/getorders",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    setorderdata(data.filter((e) => (e.userid === localStorage.getItem("userId"))))
+    console.log(data.filter((e) => (e.userid === localStorage.getItem("userId"))))
+  } else {
+    alert("Something went wrong please login again");
+  }
+} catch (error) {
+  console.error("Error during login:", error);
+}
+  }
 
   const fetchData = async () => {
     try {
@@ -29,8 +66,33 @@ function Profile() {
 }
   }
 
+//   const remove = async (id) => {
+//     try {
+//     const response = await fetch(
+//       `https://e-cartbackend.onrender.com/deleteorders/${id}`,
+//       {
+//         method: "DELETE",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+
+//     if (response.ok) {
+//       const data = await response.json();
+//       setorderdata(orderdata.filter((e) => (e._id === id)))
+//       alert("Removed");
+//     } else {
+//       alert("something went wrong");
+//     }
+//   } catch (error) {
+//     console.error("Error during login:", error);
+//   }
+// }
+
   useEffect(() => {
     fetchData();
+    fetchData2()
   }, []);
 
   return (
@@ -136,6 +198,46 @@ function Profile() {
           </div>
           ))}
         </div>
+        <div className='my-3'>
+        <h2 className="font-bold text-center text-2xl">Order's History</h2>
+       <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%] max-[640px]:w-1/2 " role="group">
+         {
+          orderdata.map(orders =>(
+            <a href='' onClick={
+              (e) => {
+                nav('/order', { state: { id: orders.productid} });
+              }
+          }>
+            <Card className=" shadow-lg m-2" placeholder="k">
+      <CardBody placeholder="k">
+        <div className="mb-3 ">
+          <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
+           <h2 className="text-black">Order Id:</h2> #{orders.orderid}
+          </Typography>
+          <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
+           <h2 className="text-black">Date:</h2>{orders.date}
+          </Typography>
+          <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
+          <h2 className="text-black">Quantity:</h2> {orders.quantity}
+          </Typography>
+          {/* <a
+                    href=""
+                    className="text-sm text-center cursor-pointer text-red-500 italic hover:underline hover:text-red-900 font-medium"
+                    onClick={
+                      (e) => {
+                        remove(orders._id)
+                      }
+                  }>
+                    <h2 className="text-center">Delete</h2>
+                  </a> */}
+        </div>
+      </CardBody>
+    </Card>
+    </a>
+          ))
+         }
+     </div>
+      </div>
     </div>
   );
 }
