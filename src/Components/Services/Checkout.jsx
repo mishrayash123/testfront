@@ -2,10 +2,12 @@ import { useLocation } from 'react-router-dom'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
+import {useAuth} from "../../AuthContext"
 
 
 
 function Checkout() {
+    const {logout} = useAuth()
     const [products, setproducts] = useState([]);
     const [quantity,setquantity] = useState(1)
     const [profiledata,setprofiledata] = useState([]);
@@ -29,7 +31,8 @@ function Checkout() {
     const data = await response.json();
     setprofiledata(data)
   } else {
-    alert("Something went wrong");
+    alert("Something went wrong please login again");
+    logout()
   }
 } catch (error) {
   console.error("Error during login:", error);
@@ -201,7 +204,7 @@ function Checkout() {
             <div className="mt-8 flex justify-end">
                 <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-700 dark:bg-teal-600 dark:text-white dark:hover:bg-teal-900"onClick={
               (e) => {
-                nav('/order', { state: { id: location.state.id } });
+                nav('/order', { state: { id: location.state.id ,quantity:quantity} });
               }
           }>Place Order</button>
             </div>
