@@ -17,7 +17,7 @@ import {useNavigate} from 'react-router-dom'
 
 function Products() {
   const [products, setproducts] = useState([]);
-  const [Search,setSearch] = useState("")
+  const [Search,setSearch] = useState(" ")
   const nav = useNavigate();
 
 
@@ -46,9 +46,11 @@ function Products() {
 <div className=" flex justify-center items-center">
 	<div className="container mx-auto bg-blue-600 p-14">
 		<form>
-			<h1 className="text-center font-bold text-white text-4xl mb-5">Search bar is disabled due to minimum products</h1>
+			<h1 className="text-center font-bold text-white text-4xl mb-5">Search your product</h1>
 				<div className="sm:flex items-center bg-white rounded-lg overflow-hidden px-2 py-1 justify-between">
-					<input className="text-base text-gray-400 flex-grow outline-none px-2 " type="text" placeholder="Search your product's name" />
+					<input className="text-base text-gray-400 flex-grow outline-none px-2 " type="text" placeholder="Search your product's name" value={Search} onChange={(e)=>{
+            setSearch(e.target.value)
+          }}/>
 					<div className="ms:flex items-center px-2 rounded-lg space-x-4 mx-auto ">
 						<select id="Com" className="text-base text-gray-800 outline-none border-2 px-4 py-2 rounded-lg">
             <option value="com" selected>electronics</option>
@@ -64,7 +66,7 @@ function Products() {
 </div>
 <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%] max-[640px]:w-1/2 " role="group">
          {
-          products.map(products =>(
+          products.filter((e)=>(e.title.toLowerCase().includes(Search.toLowerCase()))).map(products =>(
             <a href='' onClick={
               (e) => {
                 nav('/product', { state: { id: products.id,isincart:false} });
