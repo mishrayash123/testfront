@@ -3,16 +3,53 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import {useAuth} from "../../AuthContext"
+import img1 from '../Images/checkmark.png'
+import img2 from '../Images/firework.png'
 
 
 
 function Checkout() {
+    const location = useLocation();
     const {logout} = useAuth()
     const [products, setproducts] = useState([]);
     const [quantity,setquantity] = useState(1)
     const [profiledata,setprofiledata] = useState([]);
-    const location = useLocation();
+    const [date, setDate] = useState(new Date().toDateString());
+    const [productid,setproductid]=useState(location.state.id)
+    const [userid,setuserid]=useState(localStorage.getItem("userId"))
+    const [orderid,setorderid]=useState(parseInt(Math.random()*10000))
     const nav = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+
+    const placeorder = async () => {
+        try {
+      const response = await fetch(
+        "https://e-cartbackend.onrender.com/addtoorders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({userid,productid,date,orderid,quantity}),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+       alert("congrates")
+      } else {
+        alert("Already placed");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+      }
 
   const fetchData = async () => {
     try {
@@ -61,6 +98,38 @@ function Checkout() {
   
     return (
       <div>
+         <div className={`fixed inset-0 ${isModalOpen ? 'block' : 'hidden'} overflow-y-auto`}>
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="fixed inset-0 bg-green-600 "></div>
+
+        <div className="relative z-10 bg-white p-6 rounded-lg max-w-md" style={{borderRadius:"50%"}}>
+          <div className="absolute top-0 right-0 p-4">
+          </div>
+          <div className=' m-5'>
+          <h1 className='text-black text-center text-2xl font-bold'>Hurray</h1>
+          <img
+          src={img2}
+          alt="ui/ux review check"
+          className=' w-[70px] h-[50px] mx-auto my-3'
+        />
+         <h1 className='text-green-600 text-center text-2xl font-bold'>Congratulations <br></br><p className='text-red-900 font-bold'>Your Order has been placed</p></h1>
+         <img
+          src={img1}
+          alt="ui/ux review check"
+          className=' w-[70px] h-[50px] mx-auto my-3'
+        />
+         <div className="mt-4 ">
+                <a href='' className="cursor-pointer text-center font-bold text-blue-700"onClick={
+              (e) => {
+                closeModal()
+                nav('/order', { state: { id: location.state.id ,quantity:quantity} });
+              }
+          }><h1>Go to order summary</h1></a>
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
         <div className=" py-8">
         {
                     products.filter((e) => (e.id == location.state.id)).map(products => (
@@ -204,7 +273,8 @@ function Checkout() {
             <div className="mt-8 flex justify-end">
                 <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-700 dark:bg-teal-600 dark:text-white dark:hover:bg-teal-900"onClick={
               (e) => {
-                nav('/order', { state: { id: location.state.id ,quantity:quantity} });
+                placeorder();
+                openModal()
               }
           }>Place Order</button>
             </div>
