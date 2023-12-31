@@ -2,6 +2,7 @@ import { Navigate, useLocation } from 'react-router-dom'
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import Logo from "../Images/logoecart.png"
 
 function Summaery() {
     const [date, setDate] = useState(new Date());
@@ -162,9 +163,9 @@ function Summaery() {
                                 </div>
                                 <p className="text-lg font-semibold leading-6 dark:text-white text-gray-800">{order.quantity*products.price+10.99+50.00} &#8377;</p>
                             </div>
-                            <div className="w-full flex justify-center items-center">
+                            {/* <div className="w-full flex justify-center items-center">
                                 <button className="hover:bg-black dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">View Carrier Details</button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     </div>

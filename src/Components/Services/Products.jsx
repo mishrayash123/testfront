@@ -48,7 +48,7 @@ function Products() {
 		<form>
 			<h1 className="text-center font-bold text-white text-4xl mb-5">Search your product</h1>
 				<div className="sm:flex items-center bg-white rounded-lg overflow-hidden px-2 py-1 justify-between">
-					<input className="text-base text-gray-400 flex-grow outline-none px-2 " type="text" placeholder="Search your product's name" value={Search} onChange={(e)=>{
+					<input className="text-base text-gray-400 flex-grow bg-gray-300 rounded-lg py-2 px-2 " type="text" placeholder="Search your product's name" value={Search} onChange={(e)=>{
             setSearch(e.target.value)
           }}/>
 					<div className="ms:flex items-center px-2 rounded-lg space-x-4 mx-auto ">
