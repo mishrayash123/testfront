@@ -2,7 +2,6 @@ import { Navigate, useLocation } from 'react-router-dom'
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import Logo from "../Images/logoecart.png"
 
 function Summaery() {
     const [date, setDate] = useState(new Date());
@@ -81,12 +80,19 @@ function Summaery() {
         fetchData2();
     }, []);
 
-  
+    const handlePrint = () => {
+        window.print();
+      };
+
     return (
       <div>
          {
                     orderdata.filter((e) => (e.productid === location.state.id)).map(order => (
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
+            <div className='flex flex-row justify-end my-4'>
+        <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512" className='cursor-pointer' onClick={handlePrint}>
+        <path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+           </div>
             <div className="flex justify-start item-start space-y-2 flex-col">
                 <h1 className="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #{order.orderid}</h1>
                 <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">{order.date}</p>
