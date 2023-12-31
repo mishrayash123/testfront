@@ -153,7 +153,11 @@ function Summaery() {
                                         <img className="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
                                     </div>
                                     <div className="flex flex-col justify-start items-center">
-                                        <p className="text-lg leading-6 dark:text-white font-semibold text-gray-800">COD Delivery<br /><span className="font-normal">Delivery with 72 Hours</span></p>
+                                        {location.state.cod ?
+                               <p className="text-lg leading-6 dark:text-white font-semibold text-gray-800">COD Delivery<br /><span className="font-normal">Delivery with 2-4 days</span></p>
+                                :<p className="text-lg leading-6 dark:text-white font-semibold text-gray-800">Pre paid Delivery<br /><span className="font-normal">Delivery with 24 Hours</span></p>
+                                        }
+                                        
                                     </div>
                                 </div>
                                 <p className="text-lg font-semibold leading-6 dark:text-white text-gray-800">{order.quantity*products.price+10.99+50.00} &#8377;</p>

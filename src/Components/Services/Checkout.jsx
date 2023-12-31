@@ -18,8 +18,10 @@ function Checkout() {
     const [productid,setproductid]=useState(location.state.id)
     const [userid,setuserid]=useState(localStorage.getItem("userId"))
     const [orderid,setorderid]=useState(parseInt(Math.random()*10000))
+    const [cod,setcod]=useState(true)
     const nav = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const key1 = process.env.REACT_APP_KEY
 
     const closeModal = () => {
       setIsModalOpen(false);
@@ -95,6 +97,54 @@ function Checkout() {
         fetchData1();
         fetchData();
     }, []);
+
+    const loadScript = (src) => {
+      return new Promise( (resovle) => {
+      const script = document. createElement('script');
+      script.src = src;
+      script.onload = () => {
+      resovle(true)
+      }
+      script.onerror = () => {
+      resovle (false)
+      }
+      document.body.appendChild(script)
+      });
+  }
+   const razorPay = async (amount) =>{
+      //const res = await loadScript("https://pmny.in/yrz5HA0GJgxs")
+      const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+       if (!res) {
+          alert('You are offline... Failed to load Razorpay SDK');
+          return;
+       }
+      
+       const options = {
+          key:key1,
+          currency:"INR",
+          amount:100,
+          name: "E-Cart", 
+          description: "Ordering 1 thumbnail", 
+          image: 'xyz',
+
+          handler: function (response) {
+              console.log(response)
+          alert ("Payment Successfully");
+          setcod(false)
+          placeorder();
+          openModal()
+          // alert ("payment id: " + response.razorpay_payment_id)
+          }, 
+          prefill: {
+          name:
+          "E-Cart"
+          }
+          };
+
+          const paymentObject = new window.Razorpay(options);
+          paymentObject.open()
+   }
+
   
     return (
       <div>
@@ -122,7 +172,7 @@ function Checkout() {
                 <a href='' className="cursor-pointer text-center font-bold text-blue-700"onClick={
               (e) => {
                 closeModal()
-                nav('/order', { state: { id: location.state.id ,quantity:quantity} });
+                nav('/order', { state: { id: location.state.id ,quantity:quantity,cod:cod} });
               }
           }><h1>Go to order summary</h1></a>
         </div>
@@ -251,7 +301,7 @@ function Checkout() {
                 </div>
             </div>
           ))}
-            <div>
+            {/* <div>
                 <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-2">Payment Information</h2>
                 <div className="mt-4">
                     <label  className="block text-gray-700 dark:text-white mb-1">Card Number</label>
@@ -268,15 +318,22 @@ function Checkout() {
                         <input type="text" id="cvv" className="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" />
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className="mt-8 flex justify-end">
                 <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-700 dark:bg-teal-600 dark:text-white dark:hover:bg-teal-900"onClick={
               (e) => {
-                placeorder();
-                openModal()
+                razorPay(quantity*products.price+10.99+50.00);
               }
-          }>Place Order</button>
+          }>Pay & Place Order</button>
+            </div>
+            <div className="mt-8 flex justify-end">
+                <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-700 dark:bg-teal-600 dark:text-white dark:hover:bg-teal-900"onClick={
+              (e) => {
+                placeorder();
+               openModal()
+              }
+          }>Place Order as COD</button>
             </div>
         </div>
     </div>
