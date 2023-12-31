@@ -151,11 +151,14 @@ function Summaery() {
                                     <p className="text-base dark:text-white font-semibold leading-4 text-left text-gray-800">{profiledata.fname} {profiledata.lname}</p>
                                 </div>
                             </div>
-    
+                            <div className="flex justify-center text-gray-800 dark:text-white md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
+                                <p>&#9742;</p>
+                                <p className=" text-sm leading-5 ">{profiledata.phone}</p>
+                            </div>
                             <div className="flex justify-center text-gray-800 dark:text-white md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
                                 <img className="dark:hidden" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/order-summary-3-svg1.svg" alt="email" />
                                 <img className="hidden dark:block" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/order-summary-3-svg1dark.svg" alt="email" />
-                                <p className="cursor-pointer text-sm leading-5 ">{profiledata.email}</p>
+                                <p className=" text-sm leading-5 ">{profiledata.email}</p>
                             </div>
                         </div>
                         <div className="flex justify-between xl:h-full items-stretch w-full flex-col mt-6 md:mt-0">
@@ -168,13 +171,6 @@ function Summaery() {
                                     <p className="text-base dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Billing Address</p>
                                     <p className="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">{profiledata.address}</p>
                                 </div>
-                            </div>
-                            <div className="flex w-full justify-center items-center md:justify-start md:items-start">
-                                <button className="mt-6 md:mt-0 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base font-medium leading-4 text-gray-800" onClick={
-                                    ()=>{
-                                        nav('/profile')
-                                    }
-                                }>Edit Details</button>
                             </div>
                         </div>
                     </div>
