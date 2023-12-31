@@ -6,10 +6,32 @@ import axios from 'axios';
 function Summaery() {
     const [date, setDate] = useState(new Date());
     const [products, setproducts] = useState([]);
-    const [quantity,setquantity] = useState(1)
+    const [orderdata,setorderdata] = useState([])
     const [profiledata,setprofiledata] = useState([]);
     const location = useLocation();
     const nav = useNavigate();
+
+    const fetchData2 = async () => {
+        try {
+      const response = await fetch(
+        "https://e-cartbackend.onrender.com/getorders",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setorderdata(data)
+      } else {
+        alert("Something went wrong please login again");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+      }
 
   const fetchData = async () => {
     try {
@@ -35,6 +57,8 @@ function Summaery() {
 }
   }
 
+
+
     const options1 = {
         method: 'GET',
         url: `https://fakestoreapi.com/products`,
@@ -53,16 +77,18 @@ function Summaery() {
     useEffect(() => {
         fetchData1();
         fetchData();
+        fetchData2();
     }, []);
 
   
     return (
       <div>
-        
+         {
+                    orderdata.filter((e) => (e.productid === location.state.id)).map(order => (
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
             <div className="flex justify-start item-start space-y-2 flex-col">
-                <h1 className="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #{parseInt(Math.random()*10000)}</h1>
-                <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">{date.toDateString()}</p>
+                <h1 className="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #{order.orderid}</h1>
+                <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">{order.date}</p>
             </div> 
             <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
                 <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
@@ -87,8 +113,8 @@ function Summaery() {
                                 </div>
                                 <div className="flex justify-between space-x-8 items-start w-full">
                                     <p className="text-base dark:text-white xl:text-lg leading-6">{products.price} &#8377;</p>
-                                    <p className="text-base dark:text-white xl:text-lg leading-6 text-gray-800">{location.state.quantity}</p>
-                                    <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">{location.state.quantity*products.price} &#8377;</p>
+                                    <p className="text-base dark:text-white xl:text-lg leading-6 text-gray-800">{order.quantity}</p>
+                                    <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">{order.quantity*products.price} &#8377;</p>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +125,7 @@ function Summaery() {
                             <div className="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
                                 <div className="flex justify-between w-full">
                                     <p className="text-base dark:text-white leading-4 text-gray-800">Subtotal</p>
-                                    <p className="text-base dark:text-gray-300 leading-4 text-gray-600">{location.state.quantity*products.price} &#8377;</p>
+                                    <p className="text-base dark:text-gray-300 leading-4 text-gray-600">{order.quantity*products.price} &#8377;</p>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
                                     <p className="text-base dark:text-white leading-4 text-gray-800">Discount <span className="bg-gray-200 p-1 text-xs font-medium dark:bg-white dark:text-gray-800 leading-3 text-gray-800">PromoCode</span></p>
@@ -116,7 +142,7 @@ function Summaery() {
                             </div>
                             <div className="flex justify-between items-center w-full">
                                 <p className="text-base dark:text-white font-semibold leading-4 text-gray-800">Total</p>
-                                <p className="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">{location.state.quantity*products.price+10.99+50.00} &#8377;</p>
+                                <p className="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">{order.quantity*products.price+10.99+50.00} &#8377;</p>
                             </div>
                         </div>
                         <div className="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
@@ -130,7 +156,7 @@ function Summaery() {
                                         <p className="text-lg leading-6 dark:text-white font-semibold text-gray-800">COD Delivery<br /><span className="font-normal">Delivery with 72 Hours</span></p>
                                     </div>
                                 </div>
-                                <p className="text-lg font-semibold leading-6 dark:text-white text-gray-800">{location.state.quantity*products.price+10.99+50.00} &#8377;</p>
+                                <p className="text-lg font-semibold leading-6 dark:text-white text-gray-800">{order.quantity*products.price+10.99+50.00} &#8377;</p>
                             </div>
                             <div className="w-full flex justify-center items-center">
                                 <button className="hover:bg-black dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">View Carrier Details</button>
@@ -178,7 +204,7 @@ function Summaery() {
                 </div>
             </div>
         </div>
-    
+        ))}
       </div>
     );
   }
