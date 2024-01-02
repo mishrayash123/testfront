@@ -88,7 +88,7 @@ function Deals() {
 </section>
 <div className='my-3'>
         <h2 className="font-bold text-center text-2xl">Top Deals (Ends in : 23:30:20)</h2>
-        <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%] max-[640px]:w-1/2 " role="group">
+        <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]" role="group">
          {
           products.map(products =>(
             <a href='' onClick={

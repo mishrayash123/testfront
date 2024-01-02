@@ -43,12 +43,12 @@ function Products() {
 
     return (
       <div>
-<div className=" flex justify-center items-center">
+<div className=" flex justify-center items-center ">
 	<div className="container mx-auto bg-blue-600 p-14">
 		<form>
 			<h1 className="text-center font-bold text-white text-4xl mb-5">Search your product</h1>
 				<div className="sm:flex items-center bg-white rounded-lg overflow-hidden px-2 py-1 justify-between">
-					<input className="text-base text-gray-400 flex-grow bg-gray-300 rounded-lg py-2 px-2 " type="text" placeholder="Search your product's name" value={Search} onChange={(e)=>{
+					<input className="text-base text-gray-400 flex-grow bg-gray-300 rounded-lg py-2 px-2 my-1 " type="text" placeholder="Search your product's name" value={Search} onChange={(e)=>{
             setSearch(e.target.value)
           }}/>
 					<div className="ms:flex items-center px-2 rounded-lg space-x-4 mx-auto ">
@@ -58,13 +58,13 @@ function Products() {
             <option value="org">men's clothing</option>
             <option value="io">women's clothing</option>
           </select>
-						<button className="bg-indigo-500 text-white text-base rounded-lg px-4 py-2 font-thin">Search</button>
+						<button className="bg-indigo-500 text-white text-base rounded-lg px-4 py-2 my-1 font-thin">Search</button>
 					</div>
 				</div>
 		</form>
 	</div>
 </div>
-<div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%] max-[640px]:w-1/2 " role="group">
+<div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%] " role="group">
          {
           products.filter((e)=>(e.title.toLowerCase().includes(Search.toLowerCase()))).map(products =>(
             <a href='' onClick={
