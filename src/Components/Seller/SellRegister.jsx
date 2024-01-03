@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import img1 from '../Images/checkmark.png'
+import img2 from '../Images/firework.png'
+
 
 
 
@@ -9,23 +12,30 @@ const SellRegister = () => {
   const [address, setaddress] = useState("");
   const [ifc, setifc] = useState("");
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const openModal = () => {
+      setIsModalOpen(true);
+    };
   
 
   const handleRegister = async(e) => {
     e.preventDefault();
-
+    const userid = localStorage.getItem("userId");
     try {
-      const response = await fetch("https://e-cartbackend.onrender.com/auth/register", {
+      const response = await fetch("https://e-cartbackend.onrender.com/addtosellers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({  }),
+        body: JSON.stringify({userid,gstno,bank,address,ifc}),
       });
 
       if (response.ok) {
-        alert("Registered successfully and now you can login your id");
-        navigate("/login");
+        openModal()
       }else {
         alert("something went wrong...please check credential");
       }
@@ -36,6 +46,37 @@ const SellRegister = () => {
 
   return (
     <section >
+        <div className={`fixed inset-0 ${isModalOpen ? 'block' : 'hidden'} overflow-y-auto`}>
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="fixed inset-0 bg-green-600 "></div>
+
+        <div className="relative z-10 bg-white p-6 rounded-lg max-w-md" style={{borderRadius:"50%"}}>
+          <div className="absolute top-0 right-0 p-4">
+          </div>
+          <div className=' m-5'>
+          <h1 className='text-black text-center text-2xl font-bold'>Hurray</h1>
+          <img
+          src={img2}
+          alt="ui/ux review check"
+          className=' w-[70px] h-[50px] mx-auto my-3'
+        />
+         <h1 className='text-green-600 text-center text-2xl font-bold'>Congratulations <br></br><p className='text-red-900 font-bold'>You are now a Seller</p></h1>
+         <img
+          src={img1}
+          alt="ui/ux review check"
+          className=' w-[70px] h-[50px] mx-auto my-3'
+        />
+         <div className="mt-4 ">
+                <a href='' className="cursor-pointer text-center font-bold text-blue-700"onClick={
+              (e) => {
+                closeModal()
+              }
+          }><h1>Add Products</h1></a>
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
       <div className="container h-full px-6 mt-2">
         <div className="g-6 flex h-full flex-wrap items-center justify-center ">
           {/* <!-- Left column container with background--> */}
