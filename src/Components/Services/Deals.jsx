@@ -13,6 +13,7 @@ import {
   import axios from 'axios';
   import {useNavigate} from 'react-router-dom'
   import Timer from "../functions/Timer"
+  import Todaytimer from '../functions/Todaytimer'
 
 
 
@@ -166,7 +167,8 @@ function Deals() {
      </div>
       </div>
       <div className='my-3'>
-        <h2 className="font-bold text-center text-2xl">Deals of the day</h2>
+        <h2 className="font-bold text-center text-2xl">Today's deals</h2>
+        <Todaytimer />
         <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]" role="group">
          {
           products1.map(products =>(

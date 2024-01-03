@@ -17,6 +17,8 @@ import Notfound from "./Components/Notfound"
 import Notlogin from "./Components/Notlogin"
 import Profile from './Components/Profilesection/Profile';
 import Edit from './Components/Profilesection/Edit';
+import Main from './Components/Seller/Main'
+import SellRegister from './Components/Seller/SellRegister'
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -38,6 +40,8 @@ function App() {
     <Route path='/checkout' element={<Checkout />}></Route>
     <Route path='/profile' element={<Profile />}></Route>
     <Route path='/edit' element={<Edit />}></Route>
+    <Route path='/sell' element={<Main />}></Route>
+    <Route path='/registerforsell' element={<SellRegister />}></Route>
     </>
     ) : ( 
             <>
@@ -45,11 +49,13 @@ function App() {
     <Route path='/product' element={<Notlogin />}></Route>
     <Route path='/products' element={<Notlogin />}></Route>
     <Route path='/cart' element={<Notlogin />}></Route>
+    <Route path='/registerforsell' element={<Notlogin />}></Route>
     <Route path='/deals' element={<Notlogin />}></Route>
     <Route path='/profile' element={<Notlogin />}></Route>
     <Route path='/edit' element={<Notlogin />}></Route>
     <Route path='/order' element={<Notlogin/>}></Route>
     <Route path='/checkout' element={<Notlogin />}></Route>
+    <Route path='/sell' element={<Notlogin />}></Route>
     <Route path='/login' element={<Login />}></Route>
     <Route path='/register' element={<Register />}></Route>
             </>

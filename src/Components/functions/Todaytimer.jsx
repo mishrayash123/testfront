@@ -27,7 +27,7 @@ const Timer = () => {
   return (
     <div className="timer flex flex-row justify-center gap-2">
         <h2 className='font-bold  text-2xl text-black'>Ends In :</h2>
-        <h2 className="font-bold  text-2xl text-red-600">{hours+24}:{minutes}:{seconds}</h2>
+        <h2 className="font-bold  text-2xl text-red-600">{hours}:{minutes}:{seconds}</h2>
     </div>
   );
 };

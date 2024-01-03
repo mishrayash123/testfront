@@ -89,6 +89,12 @@ const Navbar = () => {
                 >
                   Cart
                 </a>
+                <a
+                  href="/sell"
+                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Sell
+                </a>
 
                 {isLoggedIn ? (
                   <>
@@ -216,6 +222,14 @@ const Navbar = () => {
                   className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Deals
+                </a>
+              </div>
+              <div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
+                <a
+                  href="/sell"
+                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Sell
                 </a>
               </div>
               <div ref={divRef} className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
