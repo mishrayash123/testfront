@@ -63,29 +63,29 @@ function Manage() {
       }
   }
 
-//   const remove = async (id) => {
-//     try {
-//     const response = await fetch(
-//       `https://e-cartbackend.onrender.com/deleteorders/${id}`,
-//       {
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
+  const remove = async (id) => {
+    try {
+    const response = await fetch(
+      `https://e-cartbackend.onrender.com/deleteproducts/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-//     if (response.ok) {
-//       const data = await response.json();
-//       setorderdata(orderdata.filter((e) => (e._id === id)))
-//       alert("Removed");
-//     } else {
-//       alert("something went wrong");
-//     }
-//   } catch (error) {
-//     console.error("Error during login:", error);
-//   }
-// }
+    if (response.ok) {
+      const data = await response.json();
+      alert("Removed");
+      fetchData2()
+    } else {
+      alert("something went wrong");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+  }
+}
 
   useEffect(() => {
     fetchData();
@@ -147,11 +147,11 @@ function Manage() {
         <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]  " role="group">
          {
           products.map(products =>(
-            <a href='' onClick={
-              (e) => {
-                nav('/product', { state: { id: products.id,isincart:false} });
-              }
-          }>
+        //     <a href='' onClick={
+        //       (e) => {
+        //         nav('/product', { state: { id: products.id,isincart:false} });
+        //       }
+        //   }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">
       <CardHeader floated={false} color="blue-gray" placeholder="k">
         <img
@@ -190,11 +190,18 @@ function Manage() {
             4.5
           </Typography>
         </div>
+        <div >
+        <p className=' text-red-600 font-bold text-sm cursor-pointer text-center' placeholder="k" onClick={()=>{
+         remove(products._id)
+        }}>
+          Delete
+        </p>
+        </div>
         {/* <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
         </div> */}
       </CardBody>
     </Card>
-    </a>
+    // </a>
           ))
          }
      </div>

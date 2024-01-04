@@ -32,8 +32,7 @@ function Profile() {
   );
   if (response.ok) {
     const data = await response.json();
-    setorderdata(data.filter((e) => (e.userid === localStorage.getItem("userId"))))
-    console.log(data.filter((e) => (e.userid === localStorage.getItem("userId"))))
+    setorderdata(data)
   } else {
     alert("Something went wrong please login again");
   }
@@ -202,7 +201,7 @@ function Profile() {
         <h2 className="font-bold text-center text-2xl">Order's History</h2>
        <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]  " role="group">
          {
-          orderdata.map(orders =>(
+          orderdata.filter((e) => (e.userid === localStorage.getItem("userId"))).map(orders =>(
             <a href='' onClick={
               (e) => {
                 nav('/order', { state: { id: orders.productid} });
