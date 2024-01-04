@@ -19,6 +19,7 @@ import Profile from './Components/Profilesection/Profile';
 import Edit from './Components/Profilesection/Edit';
 import Main from './Components/Seller/Main'
 import SellRegister from './Components/Seller/SellRegister'
+import Addproducts from './Components/Seller/Addproducts'
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -42,10 +43,12 @@ function App() {
     <Route path='/edit' element={<Edit />}></Route>
     <Route path='/sell' element={<Main />}></Route>
     <Route path='/registerforsell' element={<SellRegister />}></Route>
+    <Route path='/addproducts' element={<Addproducts />}></Route>
     </>
     ) : ( 
             <>
     <Route path='/' element={<Home />}></Route>
+    <Route path='/addproducts' element={<Notlogin />}></Route>
     <Route path='/product' element={<Notlogin />}></Route>
     <Route path='/products' element={<Notlogin />}></Route>
     <Route path='/cart' element={<Notlogin />}></Route>

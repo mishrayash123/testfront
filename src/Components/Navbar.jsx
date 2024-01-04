@@ -7,6 +7,7 @@ import Logo from "./Images/logoecart.png"
 const Navbar = () => {
   const { isLoggedIn, logout} = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isseller,setisseller] = useState(false)
   const dropdownRef = useRef(null);
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -40,6 +41,39 @@ const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const divRef = useRef();
+
+  useEffect(() => {
+    fetchData2()
+  }, []);
+
+  const fetchData2 = async () => {
+    try {
+  const response = await fetch(
+    "https://e-cartbackend.onrender.com/getsellers",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    if(data.filter((e) => (e.userid === localStorage.getItem("userId")))){
+      if(data.length <=0){
+        setisseller(false)
+      }
+      else{
+        setisseller(true)
+      }
+    }
+  } else {
+    alert("Something went wrong please login again");
+  }
+} catch (error) {
+  console.error("Error during login:", error);
+}
+  }
 
   return (
     <div className="fixed-top">
@@ -89,13 +123,19 @@ const Navbar = () => {
                 >
                   Cart
                 </a>
-                <a
+                {
+                  isseller ? <a
+                  href="/addproducts"
+                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Sell
+                </a>:<a
                   href="/sell"
                   className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Sell
                 </a>
-
+                }
                 {isLoggedIn ? (
                   <>
                     <div
@@ -224,7 +264,15 @@ const Navbar = () => {
                   Deals
                 </a>
               </div>
-              <div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
+              {
+                isseller ?<div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
+                <a
+                  href="/addproducts"
+                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Sell
+                </a>
+              </div> :<div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
                 <a
                   href="/sell"
                   className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -232,6 +280,8 @@ const Navbar = () => {
                   Sell
                 </a>
               </div>
+              }
+              
               <div ref={divRef} className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
                 <a
                   href="/cart"
