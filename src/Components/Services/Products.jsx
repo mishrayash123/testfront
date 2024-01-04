@@ -147,7 +147,7 @@ useEffect(() => {
           products1.filter((e)=>(e.title.toLowerCase().includes(Search.toLowerCase()))).map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products._id,isincart:false} });
+                nav('/sellerproduct', { state: { id: products._id,isincart:false} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">

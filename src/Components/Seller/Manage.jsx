@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import pic from "../Images/profile.jpg";
 import {
   Card,
   CardHeader,
@@ -154,11 +153,17 @@ function Manage() {
         //   }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">
       <CardHeader floated={false} color="blue-gray" placeholder="k">
+      <a href='' onClick={
+              (e) => {
+                nav('/sellerproduct', { state: { id: products._id,edit:true} });
+              }
+          }>
         <img
           src={products.image}
           alt="ui/ux review check"
           className='rounded-lg wid'
         />
+        </a>
       </CardHeader>
       <CardBody placeholder="k">
         <div className="mb-3 ">
