@@ -70,7 +70,7 @@ const SellRegister = () => {
                 <a href='' className="cursor-pointer text-center font-bold text-blue-700"onClick={
               (e) => {
                 closeModal()
-              navigate('/addproducts')
+              navigate('/manage')
               }
           }><h1>Add Products</h1></a>
         </div>

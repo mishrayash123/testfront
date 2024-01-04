@@ -13,6 +13,8 @@ function Edit() {
   const [error, setError] = useState(""); // Track form validation error
   const navigate = useNavigate();
 
+  
+
   const handleuploadimage = async() =>{
     const imageRef = ref(storage, title);
     if (image1) {
@@ -30,6 +32,12 @@ function Edit() {
             console.log(error.message);
         })
     }
+  }
+
+  function handleChange(event) {
+      setimage1(event.target.files[0]);
+settextoimage("Image selected");
+handleuploadimage();
   }
 
   const handleSubmit = async (e) => {
@@ -51,6 +59,7 @@ function Edit() {
       if (response.ok) {
         // Handle successful profile update
         alert("Added successfully");
+        navigate('/manage')
       } else {
         alert("Something wents wrong")
       }
@@ -127,16 +136,7 @@ function Edit() {
           >
             Product's Image:
           </label>
-          <input
-            type="file"
-            className="block w-full text-sm rounded-lg cursor-pointer"
-            onChange={(e) => {
-              if (e.target.files[0]) {
-                setimage1(e.target.files[0]);
-    settextoimage("Image selected");
-    handleuploadimage();
-            }
-  }}/>
+          <input type="file" onChange={handleChange}/>
         </div>
         <button
           type="submit"
