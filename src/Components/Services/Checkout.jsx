@@ -39,7 +39,7 @@ function Checkout() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({userid,productid,date,orderid,quantity}),
+          body: JSON.stringify({userid,productid,date,orderid,quantity,cod}),
         }
       );
       if (response.ok) {
