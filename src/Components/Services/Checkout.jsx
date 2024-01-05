@@ -18,7 +18,6 @@ function Checkout() {
     const [productid,setproductid]=useState(location.state.id)
     const [userid,setuserid]=useState(localStorage.getItem("userId"))
     const [orderid,setorderid]=useState(parseInt(Math.random()*10000))
-    const [cod,setcod]=useState(false)
     const nav = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const key1 = process.env.REACT_APP_KEY
@@ -30,7 +29,8 @@ function Checkout() {
         setIsModalOpen(true);
       };
 
-    const placeorder = async () => {
+    const placeorder = async (cod) => {
+      console.log(JSON.stringify({userid,productid,date,orderid,quantity,cod}))
         try {
       const response = await fetch(
         "https://e-cartbackend.onrender.com/addtoorders",
@@ -140,9 +140,8 @@ function Checkout() {
           image: 'xyz',
 
           handler: function (response) {
-            setcod(false)
           alert ("Payment Successfully");
-          placeorder();
+          placeorder(false);
           // alert ("payment id: " + response.razorpay_payment_id)
           }, 
           prefill: {
@@ -182,7 +181,7 @@ function Checkout() {
                 <a href='' className="cursor-pointer text-center font-bold text-blue-700"onClick={
               (e) => {
                 closeModal()
-                nav('/order', { state: { id: location.state.id ,quantity:quantity,cod:cod} });
+                nav('/order', { state: { id: location.state.id ,quantity:quantity} });
               }
           }><h1>Go to order summary</h1></a>
         </div>
@@ -340,8 +339,7 @@ function Checkout() {
             <div className="mt-8 flex justify-end">
                 <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-700 dark:bg-teal-600 dark:text-white dark:hover:bg-teal-900"onClick={
               (e) => {
-                setcod(true);
-                placeorder();
+                placeorder(true);
               }
           }>Place Order as COD</button>
             </div>
