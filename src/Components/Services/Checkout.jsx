@@ -18,7 +18,7 @@ function Checkout() {
     const [productid,setproductid]=useState(location.state.id)
     const [userid,setuserid]=useState(localStorage.getItem("userId"))
     const [orderid,setorderid]=useState(parseInt(Math.random()*10000))
-    const [cod,setcod]=useState(true)
+    const [cod,setcod]=useState(false)
     const nav = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const key1 = process.env.REACT_APP_KEY
@@ -42,11 +42,13 @@ function Checkout() {
           body: JSON.stringify({userid,productid,date,orderid,quantity,cod}),
         }
       );
+      console.log(cod)
       if (response.ok) {
         const data = await response.json();
        alert("congrates")
+       openModal()
       } else {
-        alert("Already placed");
+        alert("Please try again");
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -138,11 +140,9 @@ function Checkout() {
           image: 'xyz',
 
           handler: function (response) {
-              console.log(response)
+            setcod(false)
           alert ("Payment Successfully");
-          setcod(false)
           placeorder();
-          openModal()
           // alert ("payment id: " + response.razorpay_payment_id)
           }, 
           prefill: {
@@ -340,8 +340,8 @@ function Checkout() {
             <div className="mt-8 flex justify-end">
                 <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-700 dark:bg-teal-600 dark:text-white dark:hover:bg-teal-900"onClick={
               (e) => {
+                setcod(true);
                 placeorder();
-               openModal()
               }
           }>Place Order as COD</button>
             </div>

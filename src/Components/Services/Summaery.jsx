@@ -170,7 +170,7 @@ function Summaery() {
                                         <img className="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
                                     </div>
                                     <div className="flex flex-col justify-start items-center">
-                                        {location.state.cod ?
+                                        {order.cod ?
                                <p className="text-lg leading-6 dark:text-white font-semibold text-gray-800">COD Delivery<br /><span className="font-normal">Delivery with 2-4 days</span></p>
                                 :<p className="text-lg leading-6 dark:text-white font-semibold text-gray-800">Pre paid Delivery<br /><span className="font-normal">Delivery with 24 Hours</span></p>
                                         }

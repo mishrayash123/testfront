@@ -219,6 +219,9 @@ function Profile() {
           <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
           <h2 className="text-black">Quantity:</h2> {orders.quantity}
           </Typography>
+          <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
+          <h2 className="text-black">Mode:</h2>{orders.cod ?"Cod":"Prepaid"}
+          </Typography>
           {/* <a
                     href=""
                     className="text-sm text-center cursor-pointer text-red-500 italic hover:underline hover:text-red-900 font-medium"
