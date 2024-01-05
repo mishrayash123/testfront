@@ -20,41 +20,35 @@ import {
 
 function Deals() {
   const [products, setproducts] = useState([]);
-  const [products1, setproducts1] = useState([]);
   const nav = useNavigate();
 
 
-  const options = {
-    method: 'GET',
-  url: 'https://fakestoreapi.com/products/category/electronics',
-  };
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.request(options);
-      setproducts(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const options1 = {
-    method: 'GET',
-  url: "https://fakestoreapi.com/products/category/women's clothing",
-  };
+  
 
   const fetchData1 = async () => {
     try {
-      const response = await axios.request(options1);
-      setproducts1(response.data);
+      const response = await fetch(
+        "https://e-cartbackend.onrender.com/getproducts",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setproducts(data)
+      } else {
+        alert("Something went wrong please login again");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error during login:", error);
     }
   }
 
   useEffect(() => {
     fetchData1();
-    fetchData();
   }, []);
 
 
@@ -108,10 +102,10 @@ function Deals() {
         <Timer />
         <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]" role="group">
          {
-          products.map(products =>(
+          products.filter((e)=>(e.category==="electronics")).map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.id,isincart:false} });
+                nav('/product', { state: { id: products._id,cat:products.category} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">
@@ -171,10 +165,10 @@ function Deals() {
         <Todaytimer />
         <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]" role="group">
          {
-          products1.map(products =>(
+          products.filter((e)=>(e.category==="women")).map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.id,isincart:false} });
+                nav('/product', { state: { id: products._id,cat:products.category} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">

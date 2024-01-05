@@ -132,7 +132,7 @@ handleuploadimage();
 
         <div className="relative z-0 w-full mb-6 group">
           <input
-            type="number"
+            type="text"
             id="sex"
             name="sex"
             value={category}
@@ -148,8 +148,7 @@ handleuploadimage();
             Category
           </label>
         </div>
-
-        <div className="relative z-0 w-full mb-6 group">
+         <div className="relative z-0 w-full mb-6 group">
           <label
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             for="image"
@@ -157,7 +156,7 @@ handleuploadimage();
             Product's Image
           </label>
           <input type="file" onChange={handleChange}/>
-        </div>
+        </div> 
         <button
           type="submit"
           className="text-white bg-blue-700 hover-bg-blue-800 focus-ring-4 focus-outline-none focus-ring-blue-300 font-medium rounded-lg text-sm w-full sm-w-auto px-5 py-2.5 text-center dark-bg-blue-600 dark-hover-bg-blue-700 dark-focus-ring-blue-800"

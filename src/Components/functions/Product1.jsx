@@ -20,17 +20,27 @@ function Product1() {
   const nav = useNavigate();
 
 
-  const options = {
-    method: 'GET',
-  url: 'https://fakestoreapi.com/products/category/electronics',
-  };
+  
 
   const fetchData = async () => {
     try {
-      const response = await axios.request(options);
-      setproducts(response.data);
+      const response = await fetch(
+        "https://e-cartbackend.onrender.com/getproducts",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setproducts(data)
+      } else {
+        alert("Something went wrong please login again");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error during login:", error);
     }
   }
 
@@ -45,10 +55,10 @@ function Product1() {
         <h2 className="font-bold text-center text-2xl">Top Electronics</h2>
        <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]  " role="group">
          {
-          products.map(products =>(
+          products.filter((e)=>(e.category==="electronics")).slice(0,6).map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.id,isincart:false} });
+                nav('/product', { state: { id: products._id,cat:products.category} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">

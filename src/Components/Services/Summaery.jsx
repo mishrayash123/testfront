@@ -59,18 +59,28 @@ function Summaery() {
 
 
 
-    const options1 = {
-        method: 'GET',
-        url: `https://fakestoreapi.com/products`,
-    };
+    
 
     const fetchData1 = async () => {
         try {
-            const response = await axios.request(options1);
-            setproducts(response.data);
-        } catch (error) {
-            console.error(error);
-        }
+            const response = await fetch(
+              "https://e-cartbackend.onrender.com/getproducts",
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            if (response.ok) {
+              const data = await response.json();
+              setproducts(data)
+            } else {
+              alert("Something went wrong please login again");
+            }
+          } catch (error) {
+            console.error("Error during login:", error);
+          }
     }
 
 
@@ -100,7 +110,7 @@ function Summaery() {
             <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
                 <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
                     {
-                    products.filter((e) => (e.id == location.state.id)).map(products => (
+                    products.filter((e) => (e._id == location.state.id)).map(products => (
                         <div>
                     <div className="flex flex-col justify-start items-start dark:bg-gray-800 bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
                         <p className="text-lg md:text-xl dark:text-white font-semibold leading-6 xl:leading-5 text-gray-800">Customer’s Cart</p>

@@ -204,7 +204,7 @@ function Profile() {
           orderdata.filter((e) => (e.userid === localStorage.getItem("userId"))).map(orders =>(
             <a href='' onClick={
               (e) => {
-                nav('/order', { state: { id: orders.productid} });
+                nav('/order', { state: { id: orders.productid,cod:true} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">

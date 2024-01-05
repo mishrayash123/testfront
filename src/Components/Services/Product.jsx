@@ -19,47 +19,69 @@ import {
 function Product() {
     const location = useLocation();
     const [products, setproducts] = useState([]);
-    const [cat, setcat] = useState("");
     const [productid, setproductid] = useState(0);
     const [image, setimage] = useState("");
     const [title, settitle] = useState("");
     const [price, setprice] = useState(0);
-    const [isincart, setisincart] = useState(location.state.isincart);
+    const [isincart, setisincart] = useState(false);
     const nav = useNavigate();
 
-    const options = {
-        method: 'GET',
-        url: `https://fakestoreapi.com/products/${location.state.id}`,
-    };
+    
 
     const fetchData = async () => {
         try {
-            const response = await axios.request(options);
-            setcat(response.data.category)
-        } catch (error) {
-            console.error(error);
-        }
+            const response = await fetch(
+              "https://e-cartbackend.onrender.com/getproducts",
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            if (response.ok) {
+              const data = await response.json();
+              setproducts(data)
+            } else {
+              alert("Something went wrong please login again");
+            }
+          } catch (error) {
+            console.error("Error during login:", error);
+          }
     }
 
-    
-    const options1 = {
-        method: 'GET',
-        url: `https://fakestoreapi.com/products/${cat}`,
-    };
-
-    const fetchData1 = async () => {
+    const fetchData1=async()=>{
         try {
-            const response = await axios.request(options1);
-            setproducts(response.data);
-        } catch (error) {
-            console.error(error);
-        }
+            const response = await fetch(
+              "https://e-cartbackend.onrender.com/getCart",
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+          
+            if (response.ok) {
+              const data = await response.json();
+              if(data.filter((e) => ((e.userid === localStorage.getItem("userId")) && (e.productid===location.state.id)))<=0){
+               setisincart(false)
+              }
+              else{
+                setisincart(true)
+              }
+            } else {
+              alert("Something went wrong");
+            }
+          } catch (error) {
+            console.error("Error during login:", error);
+          }
     }
 
 
     useEffect(() => {
+        fetchData1()
         fetchData();
-        fetchData1();
     }, []);
 
     const addtocart = async () => {
@@ -117,7 +139,7 @@ function Product() {
         <div>
             <div className="bg-gray-100 dark:bg-gray-800 py-8">
                 {
-                    products.filter((e) => (e.id == location.state.id)).map(products => (
+                    products.filter((e) => (e._id == location.state.id)).map(products => (
                         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="flex flex-col md:flex-row -mx-4">
                                 <div className="md:flex-1 px-4">
@@ -129,14 +151,14 @@ function Product() {
                                             {
                                                 isincart? <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700"
                                                 onClick={()=>{
-                                                   remove(products.id)
+                                                   remove()
                                                 }}
                                                 >Remove</button> :<button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700"
                                                 onClick={()=>{
                                                     setimage(products.image)
                                                     setprice(products.price)
                                                     settitle(products.title)
-                                                    setproductid(products.id)
+                                                    setproductid(products._id)
                                                     addtocart()
                                                 }}
                                                 >Add to Cart</button>
@@ -145,7 +167,7 @@ function Product() {
                                         <div className="w-1/2 px-2">
                                             <button className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600" onClick={
                                 (e) => {
-                                    nav('/checkout', { state: { id: products.id } });
+                                    nav('/checkout', { state: { id: products._id } });
                                 }
                             }>Buy Now</button>
                                         </div>
@@ -166,7 +188,7 @@ function Product() {
                                         </div>
                                         
                                     </div>
-                                    {!(cat==="electronics" || cat==="jewelery")
+                                    {!(location.state.cat==="electronics" || location.state.cat==="jewellery")
                                         &&(
                                         <div>
                                             <div className="mb-4">
@@ -206,10 +228,10 @@ function Product() {
                 <h2 className="font-bold text-center text-2xl">Similar Products</h2>
                 <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]" role="group">
                     {
-                        products.filter((e) => (e.category == cat)).map(products => (
+                        products.filter((e) => (e.category == location.state.cat)).map(products => (
                             <a href='' onClick={
                                 (e) => {
-                                    nav('/product', { state: { id: products.id } });
+                                    nav('/product', { state: { id: products._id,cat:products.category } });
                                 }
                             }>
                                 <Card className="cardwid shadow-lg m-2" placeholder="k">

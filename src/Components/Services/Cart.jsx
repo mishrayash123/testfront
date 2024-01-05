@@ -54,7 +54,7 @@ function Cart() {
           products.map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.productid ,isincart:true,objid:products._id} });
+                nav('/product', { state: { id: products.productid ,objid:products._id,cat:"electronics"} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">

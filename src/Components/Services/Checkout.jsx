@@ -78,18 +78,28 @@ function Checkout() {
 }
   }
 
-    const options1 = {
-        method: 'GET',
-        url: `https://fakestoreapi.com/products`,
-    };
+    
 
     const fetchData1 = async () => {
-        try {
-            const response = await axios.request(options1);
-            setproducts(response.data);
-        } catch (error) {
-            console.error(error);
+      try {
+        const response = await fetch(
+          "https://e-cartbackend.onrender.com/getproducts",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setproducts(data)
+        } else {
+          alert("Something went wrong please login again");
         }
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
     }
 
 
@@ -182,7 +192,7 @@ function Checkout() {
     </div>
         <div className=" py-8">
         {
-                    products.filter((e) => (e.id == location.state.id)).map(products => (
+                    products.filter((e) => (e._id == location.state.id)).map(products => (
     <div className="container mx-auto px-4">
         <h1 className="text-2xl font-semibold mb-4">Shopping Cart</h1>
         <div className="flex flex-col md:flex-row gap-4">

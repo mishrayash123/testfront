@@ -15,41 +15,36 @@ import {useNavigate} from 'react-router-dom'
 
 
 function Product2() {
-  const [products1, setproducts1] = useState([]);
-  const [products2, setproducts2] = useState([]);
+  const [products, setproducts] = useState([]);
   const nav = useNavigate();
 
 
-  const options1 = {
-    method: 'GET',
-  url: `https://fakestoreapi.com/products/category/men's clothing`,
-  };
-
+  
   const fetchData1 = async () => {
     try {
-      const response = await axios.request(options1);
-      setproducts1(response.data);
+      const response = await fetch(
+        "https://e-cartbackend.onrender.com/getproducts",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setproducts(data)
+      } else {
+        alert("Something went wrong please login again");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error during login:", error);
     }
   }
 
-  const options2 = {
-    method: 'GET',
-  url: `https://fakestoreapi.com/products/category/jewelery`,
-  };
-
-  const fetchData2 = async () => {
-    try {
-      const response = await axios.request(options2);
-      setproducts2(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  
 
   useEffect(() => {
-    fetchData2();
     fetchData1();
   }, []);
  
@@ -60,10 +55,10 @@ function Product2() {
         <h2 className="font-bold text-center text-2xl">Men's clothing</h2>
        <div className="container  grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 pt-3 gap-3" role="group">
          {
-          products1.slice(0,3).map(products =>(
+          products.filter((e)=>(e.category==="men")).slice(0,3).map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.id,isincart:false } });
+                nav('/product', { state: { id: products._id,cat:products.category } });
               }
           }>
             <Card className="cardwid1 shadow-lg m-2" placeholder="k">
@@ -117,10 +112,10 @@ function Product2() {
         <h2 className="font-bold text-center text-2xl">Jewelery</h2>
        <div className="container  grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 pt-3 gap-3" role="group">
          {
-          products2.slice(0,3).map(products =>(
+          products.filter((e)=>(e.category==="jwellery")).slice(0,3).map(products =>(
             <a href='' onClick={
               (e) => {
-                nav('/product', { state: { id: products.id,isincart:false} });
+                nav('/product', { state: { id: products._id,cat:products.category} });
               }
           }>
             <Card className="cardwid shadow-lg m-2" placeholder="k">
