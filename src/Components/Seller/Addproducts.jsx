@@ -8,13 +8,13 @@ function Edit() {
   const [price, setprice] = useState(0);
   const [description, setdescription] = useState("");
   const [image, setimage] = useState("");
+  const [category, setcategory] = useState("");
   const [image1, setimage1] = useState(null);
   const [textoimage, settextoimage] = useState("");
   const [error, setError] = useState(""); // Track form validation error
   const navigate = useNavigate();
 
   
-
   const handleuploadimage = async() =>{
     const imageRef = ref(storage, title);
     if (image1) {
@@ -52,7 +52,7 @@ handleuploadimage();
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({title,userid,price,description,image}),
+          body: JSON.stringify({title,userid,price,description,image,category}),
         }
       );
 
@@ -126,15 +126,35 @@ handleuploadimage();
             for="sex"
             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
-            Price:
+            Price
           </label>
         </div>
+
+        <div className="relative z-0 w-full mb-6 group">
+          <input
+            type="number"
+            id="sex"
+            name="sex"
+            value={category}
+            onChange={(e) => setcategory(e.target.value)}
+            required // Mark the field as required
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+          />
+          <label
+            for="sex"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Category
+          </label>
+        </div>
+
         <div className="relative z-0 w-full mb-6 group">
           <label
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             for="image"
           >
-            Product's Image:
+            Product's Image
           </label>
           <input type="file" onChange={handleChange}/>
         </div>
