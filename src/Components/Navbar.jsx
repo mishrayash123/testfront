@@ -59,13 +59,11 @@ const Navbar = () => {
   );
   if (response.ok) {
     const data = await response.json();
-    if(data.filter((e) => (e.userid === localStorage.getItem("userId")))){
-      if(data.length <=0){
+    if(data.filter((e) => (e.userid === localStorage.getItem("userId")))<=0){
         setisseller(false)
-      }
-      else{
-        setisseller(true)
-      }
+    }
+    else{
+      setisseller(true)
     }
   } else {
     alert("Something went wrong please login again");
