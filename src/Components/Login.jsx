@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://e-cartbackend.onrender.com/auth/login",
+        "https://urlshortner-iakh.onrender.com/auth/login",
         {
           method: "POST",
           headers: {
@@ -29,8 +29,8 @@ const Login = () => {
         const { username, email } = data;
         setUser({ username, email });
         login();
-        localStorage.setItem("token", data.sessionToken);
-        localStorage.setItem("userId", data._id);
+        localStorage.setItem("tokenurlshort", data.sessionToken);
+        localStorage.setItem("userIdurlshort", data._id);
         alert("Logged in successfully");
         navigate("/");
       } else {

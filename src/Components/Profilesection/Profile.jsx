@@ -11,18 +11,18 @@ import {
   Tooltip,
   IconButton,
 } from "@material-tailwind/react";
-import '../css/product.css'
+import '../css/all.css'
 import {useNavigate} from 'react-router-dom'
 
 function Profile() {
   const [profiledata,setprofiledata] = useState([]);
-  const [orderdata,setorderdata] = useState([])
+  const [urlsdata,seturlsdata] = useState([])
   const nav = useNavigate();
 
   const fetchData2 = async () => {
     try {
   const response = await fetch(
-    "https://e-cartbackend.onrender.com/getorders",
+    "https://urlshortner-iakh.onrender.com/api/geturls",
     {
       method: "GET",
       headers: {
@@ -32,7 +32,7 @@ function Profile() {
   );
   if (response.ok) {
     const data = await response.json();
-    setorderdata(data)
+    seturlsdata(data)
   } else {
     alert("Something went wrong please login again");
   }
@@ -43,9 +43,9 @@ function Profile() {
 
   const fetchData = async () => {
     try {
-      const sessionToken=localStorage.getItem("token");
+      const sessionToken=localStorage.getItem("tokenurlshort");
   const response = await fetch(
-    "https://e-cartbackend.onrender.com/users",
+    "https://urlshortner-iakh.onrender.com/users",
     {
       method: "POST",
       headers: {
@@ -57,6 +57,7 @@ function Profile() {
   if (response.ok) {
     const data = await response.json();
     setprofiledata(data)
+    console.log(data)
   } else {
     alert("Something went wrong");
   }
@@ -65,29 +66,29 @@ function Profile() {
 }
   }
 
-//   const remove = async (id) => {
-//     try {
-//     const response = await fetch(
-//       `https://e-cartbackend.onrender.com/deleteorders/${id}`,
-//       {
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
+  const remove = async (id) => {
+    try {
+    const response = await fetch(
+      `https://urlshortner-iakh.onrender.com/api/deleteurl/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-//     if (response.ok) {
-//       const data = await response.json();
-//       setorderdata(orderdata.filter((e) => (e._id === id)))
-//       alert("Removed");
-//     } else {
-//       alert("something went wrong");
-//     }
-//   } catch (error) {
-//     console.error("Error during login:", error);
-//   }
-// }
+    if (response.ok) {
+      const data = await response.json();
+      alert("Removed");
+      fetchData2();
+    } else {
+      alert("something went wrong");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+  }
+}
 
   useEffect(() => {
     fetchData();
@@ -98,7 +99,7 @@ function Profile() {
     <div className="p-8  ">
         <div className="flex items-center justify-center m-6 ">
         {
-          profiledata.filter((e) => (e._id === localStorage.getItem("userId"))).map(profiledata =>(
+          profiledata.filter((e) => (e._id === localStorage.getItem("userIdurlshort"))).map(profiledata =>(
           <div className="max-w-md xl:max-w-2xl bg-white ">
             <div className="shadow-xl   p-6 md:p-8 lg:p-10 xl:p-12">
               <div className="photo-wrapper mx-auto mb-6 ">
@@ -108,13 +109,7 @@ function Profile() {
                   alt="Profile"
                 />
               </div>
-              {profiledata.fname && (
-                <div className="text-center">
-                  <h3 className="text-base lg:text-2xl font-bold leading-8">
-                    {profiledata.fname} {profiledata.lname}
-                  </h3>
-                </div>
-              )}
+              
               <table className="text-lg lg:text-base my-6">
                 <tbody>
                   {profiledata.email && (
@@ -131,111 +126,51 @@ function Profile() {
                       </td>
                       <td className="px-2 py-2">{profiledata.username}</td>
                     </tr>
-                  {profiledata.phone && (
-                    <tr>
-                      <td className="px-2 py-2 text-gray-500 font-semibold">
-                        Phone
-                      </td>
-                      <td className="px-2 py-2">
-                        {profiledata.phone}
-                      </td>
-                    </tr>
-                  )}
-                  {profiledata.address && (
-                    <tr>
-                      <td className="px-2 py-2 text-gray-500 font-semibold">
-                        Address
-                      </td>
-                      <td className="px-2 py-2">{profiledata.address}</td>
-                    </tr>
-                  )}
-                  <tr>
-                      <td className="px-2 py-2 text-gray-500 font-semibold">
-                        City
-                      </td>
-                      <td className="px-2 py-2">{profiledata.city}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-2 py-2 text-gray-500 font-semibold">
-                        State
-                      </td>
-                      <td className="px-2 py-2">{profiledata.state}</td>
-                    </tr>
-                  {profiledata.zip && (
-                    <tr>
-                      <td className="px-2 py-2 text-gray-500 font-semibold">
-                        Pincode
-                      </td>
-                      <td className="px-2 py-2">{profiledata.zip}</td>
-                    </tr>
-                  )}
                 </tbody>
               </table>
-              <div className="text-center my-6">
-                {!(true) ? (
-                  <>
-                    <p className="text-sm font-light text-red-500 dark:text-red-400 mb-2">
-                      Your Profile is Incomplete please complete your Profile
-                    </p>
-                    <Link
-                      to="/edit"
-                      className="text-sm text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
-                    >
-                      Complete Profile
-                    </Link>
-                  </>
-                ) : (
-                  <Link
-                    to="/edit"
-                    className="text-sm text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
-                  >
-                    Edit Profile
-                  </Link>
-                )}
-              </div>
             </div>
           </div>
           ))}
         </div>
         <div className='my-3'>
-        <h2 className="font-bold text-center text-2xl">Order's History</h2>
-       <div className="container mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 pt-3 gap-8 w-[90%]  " role="group">
+        <h2 className="font-bold text-center text-2xl">Sorted Url's History</h2>
+       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 pt-3 gap-8 w-full sm:w-5/6 lg:w-3/4 xl:w-11/12" role="group">
          {
-          orderdata.filter((e) => (e.userid === localStorage.getItem("userId"))).map(orders =>(
-            <a href='' onClick={
-              (e) => {
-                nav('/order', { state: { id: orders.productid,cod:true} });
-              }
-          }>
-            <Card className="cardwid shadow-lg m-2" placeholder="k">
-      <CardBody placeholder="k">
+          urlsdata.filter((e) => (e.userid === localStorage.getItem("userIdurlshort"))).map(url =>(
+            <Card className=" shadow-lg m-2" placeholder="k">
+      <CardBody placeholder="k" className="text-wrap overflow-hidden">
         <div className="mb-3 ">
+        <div className='my-3 text-center'>
+    <a href={url.longUrl} className='text-base font-bold text-blue-800' target='_blanck'>
+    Long Url
+    </a>
+    </div>
           <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
-           <h2 className="text-black">Order Id:</h2> #{orders.orderid}
+           <h2 className="text-black">Url Code:</h2>{url.urlCode}
           </Typography>
           <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
-           <h2 className="text-black">Date:</h2>{orders.date}
+           <h2 className="text-black">Short Url :</h2>
           </Typography>
+          <div className='mb-3 text-center'>
+    <a href={url.shortUrl} className='text-base font-bold text-blue-800' target='_blanck'>
+    {url.shortUrl}
+    </a>
+    </div>
           <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
-          <h2 className="text-black">Quantity:</h2> {orders.quantity}
+          <h2 className="text-black">Date :</h2>{Date(url.datenew)}
           </Typography>
-          <Typography variant="h6" color="blue-gray" className="font-base text-center" placeholder="k">
-          <h2 className="text-black">Mode:</h2>{orders.cod ?"Cod":"Prepaid"}
-          </Typography>
-          {/* <a
-                    href=""
+          <a
                     className="text-sm text-center cursor-pointer text-red-500 italic hover:underline hover:text-red-900 font-medium"
                     onClick={
                       (e) => {
-                        remove(orders._id)
+                        remove(url._id)
                       }
                   }>
                     <h2 className="text-center">Delete</h2>
-                  </a> */}
+                  </a>
         </div>
       </CardBody>
     </Card>
-    </a>
           ))
          }
      </div>

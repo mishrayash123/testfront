@@ -9,8 +9,8 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-  const authToken = localStorage.getItem("token");
-    const id = localStorage.getItem("userId");
+  const authToken = localStorage.getItem("tokenurlshort");
+    const id = localStorage.getItem("userIdurlshort");
 
   useEffect(() => {
     
@@ -29,8 +29,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("tokenurlshort");
+    localStorage.removeItem("userIdurlshort");
   };
 
   return (

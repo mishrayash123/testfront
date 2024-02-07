@@ -10,7 +10,6 @@ import { useAuth } from "./AuthContext";
 import Notfound from "./Components/Notfound"
 import Notlogin from "./Components/Notlogin"
 import Profile from './Components/Profilesection/Profile';
-import Edit from './Components/Profilesection/Edit';
 
 
 function App() {
@@ -26,13 +25,11 @@ function App() {
              <>
     <Route path='/' element={<Home />}></Route>
     <Route path='/profile' element={<Profile />}></Route>
-    <Route path='/edit' element={<Edit />}></Route>
     </>
     ) : ( 
             <>
-    <Route path='/' element={<Home />}></Route>
+    <Route path='/' element={<Notlogin />}></Route>
     <Route path='/profile' element={<Notlogin />}></Route>
-    <Route path='/edit' element={<Notlogin />}></Route>
     <Route path='/login' element={<Login />}></Route>
     <Route path='/register' element={<Register />}></Route>
             </>

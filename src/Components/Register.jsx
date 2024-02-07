@@ -14,7 +14,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://e-cartbackend.onrender.com/auth/register", {
+      const response = await fetch("https://urlshortner-iakh.onrender.com/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
