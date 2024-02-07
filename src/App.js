@@ -1,5 +1,4 @@
 import { Route, Routes, BrowserRouter  } from 'react-router-dom';
-import { useEffect } from 'react';
 import Home from './Components/Home';
 import Navbar from './Components/Navbar';
 import './App.css';

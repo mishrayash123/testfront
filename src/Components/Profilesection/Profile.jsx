@@ -1,23 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import pic from "../Images/profile.jpg";
 import {
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
   Typography,
-  Button,
-  Tooltip,
-  IconButton,
 } from "@material-tailwind/react";
-import '../css/all.css'
-import {useNavigate} from 'react-router-dom'
 
 function Profile() {
   const [profiledata,setprofiledata] = useState([]);
   const [urlsdata,seturlsdata] = useState([])
-  const nav = useNavigate();
 
   const fetchData2 = async () => {
     try {
