@@ -2,7 +2,6 @@ import { Transition } from "@headlessui/react";
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import pic from "./Images/profile.jpg";
-import Logo from "./Images/logoecart.png"
 
 const Navbar = () => {
   const { isLoggedIn, logout} = useAuth();
@@ -42,37 +41,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const divRef = useRef();
 
-  useEffect(() => {
-    fetchData2()
-  }, []);
-
-  const fetchData2 = async () => {
-    try {
-  const response = await fetch(
-    "https://e-cartbackend.onrender.com/getsellers",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  if (response.ok) {
-    const data = await response.json();
-    if(data.filter((e) => (e.userid === localStorage.getItem("userId")))<=0){
-        setisseller(false)
-    }
-    else{
-      setisseller(true)
-    }
-  } else {
-    alert("Something went wrong please login again");
-  }
-} catch (error) {
-  console.error("Error during login:", error);
-}
-  }
-
   return (
     <div className="fixed-top">
       <nav className="bg-blue-600 text-white">
@@ -82,12 +50,9 @@ const Navbar = () => {
               <div className="flex flex-row">
                 <a
                   href="/"
+                  className="text-white font-bold text-xl"
                 >
-                <img
-          src={Logo}
-          alt="ui/ux review check"
-          className=' w-[70px] h-[50px]'
-        />
+                  Url Shortner
                 </a>
               </div>
               <div className="hidden md:block">
@@ -103,37 +68,6 @@ const Navbar = () => {
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-center space-x-2">
-                <a
-                  href="/products"
-                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Products
-                </a>
-                <a
-                  href="/deals"
-                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Deals
-                </a>
-                <a
-                  href="/cart"
-                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Cart
-                </a>
-                {
-                  isseller ? <a
-                  href="/manage"
-                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Sell
-                </a>:<a
-                  href="/sell"
-                  className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Sell
-                </a>
-                }
                 {isLoggedIn ? (
                   <>
                     <div
@@ -151,7 +85,7 @@ const Navbar = () => {
                         />
                       </button>
                       {isDropdownOpen && (
-                        <div className=" origin-top-right absolute right-0 mt-3 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <div className=" origin-top-right absolute z-1 right-0 mt-3 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ">
                           <div className="py-1">
                             <a
                               href="/profile"
@@ -246,51 +180,6 @@ const Navbar = () => {
                   Home
                 </a>
               </div>
-              <div ref={divRef} className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
-                <a
-                  href="/products"
-                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Products
-                </a>
-              </div>
-              <div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
-                <a
-                  href="/deals"
-                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Deals
-                </a>
-              </div>
-              {
-                isseller ?<div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
-                <a
-                  href="/manage"
-                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Sell
-                </a>
-              </div> :<div ref={divRef} className="px-2 pt-2 pb-1 space-y-1 sm:px-3">
-                <a
-                  href="/sell"
-                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Sell
-                </a>
-              </div>
-              }
-              
-              <div ref={divRef} className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
-                <a
-                  href="/cart"
-                  data-modal-target="authentication-modal"
-                  data-modal-toggle="authentication-modal"
-                  className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Cart
-                </a>
-              </div>
-
               {isLoggedIn ? (
                 <>
 
