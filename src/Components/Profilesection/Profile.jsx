@@ -9,6 +9,7 @@ import {
 function Profile() {
   const [profiledata,setprofiledata] = useState([]);
   const [urlsdata,seturlsdata] = useState([])
+  const [totalurl,settotalurl] = useState(0)
 
   const fetchData2 = async () => {
     try {
@@ -24,6 +25,7 @@ function Profile() {
   if (response.ok) {
     const data = await response.json();
     seturlsdata(data)
+    settotalurl(data.filter((e) => (e.userid === localStorage.getItem("userIdurlshort"))).length)
   } else {
     alert("Something went wrong please login again");
   }
@@ -48,9 +50,8 @@ function Profile() {
   if (response.ok) {
     const data = await response.json();
     setprofiledata(data)
-    console.log(data)
   } else {
-    alert("Something went wrong");
+    alert("Your session has been expired so please login again");
   }
 } catch (error) {
   console.error("Error during login:", error);
@@ -105,17 +106,23 @@ function Profile() {
                 <tbody>
                   {profiledata.email && (
                     <tr>
-                      <td className="px-2 py-2 text-gray-500 font-semibold">
+                      <td className="px-2 py-2 text-gray-500 font-bold">
                         Email
                       </td>
                       <td className="px-2 py-2">{profiledata.email}</td>
                     </tr>
                   )}
                   <tr>
-                      <td className="px-2 py-2 text-gray-500 font-semibold">
+                      <td className="px-2 py-2 text-gray-500 font-bold">
                         Username
                       </td>
                       <td className="px-2 py-2">{profiledata.username}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-2 py-2 text-gray-500 font-bold">
+                      Total Urls
+                      </td>
+                      <td className="px-2 py-2">{totalurl}</td>
                     </tr>
                 </tbody>
               </table>
