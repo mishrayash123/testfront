@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### For backend Server
 You can click here.\
-Open [https://github.com/mishrayash123/E-cartservernew](https://github.com/mishrayash123/E-cartservernew) to view it in your browser.
+Open [https://github.com/mishrayash123/urlshortnerbackend](https://github.com/mishrayash123/urlshortnerbackend) to view it in your browser.
 
 ## Available Scripts
 
