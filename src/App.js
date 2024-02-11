@@ -3,22 +3,26 @@ import Home from './Components/Home';
 import Navbar from './Components/Navbar';
 import './App.css';
 import Footer from './Components/Footer';
-import Login from './Components/Login';
 import Register from './Components/Register';
-import { useAuth } from "./AuthContext";
 import Notfound from "./Components/Notfound"
 import Notlogin from "./Components/Notlogin"
 import Profile from './Components/Profilesection/Profile';
+import React, { useState, useRef, useEffect } from "react";
 
 
 function App() {
-  const { isLoggedIn } = useAuth();
+  const [isLoggedIn,setisLoggedIn] = useState(true)
 
+  useEffect(() => {
+    if( !localStorage.getItem("tokenurlshort")){
+     setisLoggedIn(false)
+    }
+  }, []);
   
   return (
     <div>
-      <Navbar />
 <BrowserRouter>
+<Navbar />
     <Routes>
     {isLoggedIn ? (
              <>
@@ -29,7 +33,6 @@ function App() {
             <>
     <Route path='/' element={<Notlogin />}></Route>
     <Route path='/profile' element={<Notlogin />}></Route>
-    <Route path='/login' element={<Login />}></Route>
     <Route path='/register' element={<Register />}></Route>
             </>
              )}

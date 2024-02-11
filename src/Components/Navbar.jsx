@@ -1,12 +1,12 @@
 import { Transition } from "@headlessui/react";
 import React, { useState, useRef, useEffect } from "react";
-import { useAuth } from "../AuthContext";
 import pic from "./Images/profile.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { isLoggedIn, logout} = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isseller,setisseller] = useState(false)
+  const [isLoggedIn,setisLoggedIn] = useState(true)
+  const nav = useNavigate();
   const dropdownRef = useRef(null);
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -15,6 +15,19 @@ const Navbar = () => {
   const handleDropdownClick = () => {
     setIsDropdownOpen((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    if( !localStorage.getItem("tokenurlshort")){
+     setisLoggedIn(false)
+    }
+  }, []);
+
+  const logout = () =>{
+    setisLoggedIn(false);
+    localStorage.removeItem("tokenurlshort");
+    localStorage.removeItem("userIdurlshort");
+    nav("/register")
+  }
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -52,7 +65,7 @@ const Navbar = () => {
                   href="/"
                   className="text-white font-bold text-xl"
                 >
-                  Url Shortner
+                  Job Board
                 </a>
               </div>
               <div className="hidden md:block">
@@ -106,7 +119,7 @@ const Navbar = () => {
                   </>
                 ) : (
                   <a
-                    href="/login"
+                    href="/register"
                     className="hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     SignIn
@@ -208,7 +221,7 @@ const Navbar = () => {
               ) : (
                 <div ref={divRef} className="px-2 pt-1 pb-1 space-y-1 sm:px-3">
                   <a
-                    href="/login"
+                    href="/register"
                     className=" hover:bg-black text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     SignIn

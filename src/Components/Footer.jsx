@@ -13,7 +13,7 @@ function Footer() {
     <a
       className="font-semibold text-white dark:text-neutral-400"
       href="/"
-      >Url Shortner</a>
+      >Job Board</a>
   </div>
 </footer>
       </div>
